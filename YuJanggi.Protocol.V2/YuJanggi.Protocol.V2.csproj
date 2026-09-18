@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0;netstandard2.1</TargetFrameworks>
+
+		<AssemblyName>YuJanggi.Protocol.V2</AssemblyName>
+		<RootNamespace>YuJanggi.Protocol.V2</RootNamespace>
+
+		<LangVersion>10.0</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Folder Include="Lobby\" />
+	</ItemGroup>
+
+</Project>
