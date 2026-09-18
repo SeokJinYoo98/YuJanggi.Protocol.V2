@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="YuJanggi.Protocol.V2.Tests/YuJanggi.Protocol.V2.Tests.csproj" />
   <Project Path="YuJanggi.Protocol.V2/YuJanggi.Protocol.V2.csproj" />
 </Solution>
