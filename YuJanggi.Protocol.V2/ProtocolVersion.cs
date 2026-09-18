@@ -1,8 +1,10 @@
 ﻿using System;
 
-namespace YuJanggi.Protocol.V2;
-
-public static class ProtocolVersion
+namespace YuJanggi.Protocol.V2
 {
-    public const string Current = "0.1.0";
+
+    public static class ProtocolVersion
+    {
+        public const string Current = "0.1.0";
+    }
 }

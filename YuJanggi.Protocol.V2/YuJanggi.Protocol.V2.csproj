@@ -6,13 +6,13 @@
 		<AssemblyName>YuJanggi.Protocol.V2</AssemblyName>
 		<RootNamespace>YuJanggi.Protocol.V2</RootNamespace>
 
-		<LangVersion>10.0</LangVersion>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>9.0</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<ItemGroup>
-	  <Folder Include="Lobby\" />
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="System.Text.Json" Version="8.0.5" />
 	</ItemGroup>
 
 </Project>
