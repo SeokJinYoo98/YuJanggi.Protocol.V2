@@ -1,0 +1,8 @@
+{
+  "name": "YuJanggi.Protocol.V2",
+  "rootNamespace": "YuJanggi.Protocol.V2",
+  "references": [],
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "noEngineReferences": true
+}

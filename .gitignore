@@ -44,3 +44,7 @@ desktop.ini
 
 # Generated artifacts
 artifacts/
+
+# UPM sources are generated from the .NET project
+/upm/Runtime/Generated/
+/upm/Runtime/Generated.meta

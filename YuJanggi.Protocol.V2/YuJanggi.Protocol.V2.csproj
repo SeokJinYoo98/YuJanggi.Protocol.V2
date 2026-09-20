@@ -5,7 +5,10 @@
 
 		<AssemblyName>YuJanggi.Protocol.V2</AssemblyName>
 		<RootNamespace>YuJanggi.Protocol.V2</RootNamespace>
-
+		
+		<PackageId>YuJanggi.Protocol.V2</PackageId>
+		<Version>0.1.0</Version>
+		
 		<LangVersion>9.0</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
