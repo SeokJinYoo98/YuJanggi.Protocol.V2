@@ -9,7 +9,9 @@ namespace YuJanggi.Protocol.V2.Messages
 
     public enum ClientMessageType
     {
-        ProtocolHandshake,
+        ProtocolHandshake = 0,
+        MatchingRequest = 1,
+        MatchingCancelRequest = 2,
     }
     /// <summary>
     /// [Type]

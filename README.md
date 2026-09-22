@@ -8,11 +8,20 @@ Unity 클라이언트와 .NET 서버가 공유하는 유장기 네트워크 프�
 - 클라이언트 요청과 서버 응답·이벤트를 표현하는 메시지 모델
 - 요청 ID 생성 및 응답 연결을 위한 메시지 팩토리
 - 프로토콜·Core 버전 확인에 사용하는 핸드셰이크 DTO
+- 매칭 신청·취소 요청과 응답, 매칭 완료 이벤트 DTO
 - System.Text.Json 기반 UTF-8 직렬화와 payload 복원
 - 4바이트 길이 헤더와 본문 크기 검증
 
-TCP 연결 관리, 핸드셰이크 판정, 게임 규칙은 소비자 측에서 구현합니다.
-현재 요청 종류는 `ProtocolHandshake`이며 서버 메시지에는 `ProtocolHandshake`와 `Error`가 정의되어 있습니다.
+TCP 연결 관리, 핸드셰이크 판정, 매칭 대기열과 게임 규칙은 소비자 측에서 구현합니다.
+
+## 변경 이력
+
+### 2026-09-22 — 매칭 프로토콜 추가
+
+- `MatchingRequest` / `MatchingResponse`: 매칭 신청과 접수 결과. `Accepted`는 대기열 접수이며 매칭 완료가 아닙니다.
+- `MatchingCancelRequest` / `MatchingCancelResponse`: 매칭 대기 취소와 처리 결과. 신청·취소 응답은 요청의 `RequestId`를 유지합니다.
+- `MatchingFound`: 매칭 완료 이벤트(`RequestId = null`). `MatchId`와 초·한 플레이어의 ID·이름을 전달합니다.
+- 매칭 계약만 제공하며 대기열 처리, 대국 시작과 초기 보드 구성은 소비자 측에서 구현합니다.
 
 ## 요구 환경
 
@@ -21,8 +30,8 @@ TCP 연결 관리, 핸드셰이크 판정, 게임 규칙은 소비자 측에서 
 | 소스 빌드·테스트 | .NET SDK 10 |
 | 라이브러리 타깃 | `net10.0`, `netstandard2.1` |
 | 라이브러리 C# 버전 | 9.0 |
-| NuGet 패키지 | `YuJanggi.Protocol.V2` 0.1.0 |
-| Unity 패키지 | `com.seokjinyoo.yujanggi.protocol.v2` 0.1.0, Unity 6 대상 |
+| NuGet 패키지 | `YuJanggi.Protocol.V2` 0.2.0 |
+| Unity 패키지 | `com.seokjinyoo.yujanggi.protocol.v2` 0.2.0, Unity 6 대상 |
 | .NET Standard JSON 의존성 | System.Text.Json 8.0.5 |
 
 Unity에서는 JSON 의존성을 별도로 제공해야 합니다. Unity Editor 및 IL2CPP 실행 검증은 아직 완료하지 않았습니다.
@@ -37,12 +46,12 @@ Unity에서는 JSON 의존성을 별도로 제공해야 합니다. Unity Editor 
 dotnet pack YuJanggi.Protocol.V2/YuJanggi.Protocol.V2.csproj -c Release -o artifacts/nuget
 ```
 
-결과는 `artifacts/nuget/YuJanggi.Protocol.V2.0.1.0.nupkg`입니다.
+결과는 `artifacts/nuget/YuJanggi.Protocol.V2.0.2.0.nupkg`입니다.
 같은 저장소 루트에서 예제 콘솔 프로젝트를 만들 수 있습니다.
 
 ```powershell
 dotnet new console -n ProtocolDemo -o artifacts/ProtocolDemo -f net10.0
-dotnet add artifacts/ProtocolDemo/ProtocolDemo.csproj package YuJanggi.Protocol.V2 --version 0.1.0 --source ./artifacts/nuget
+dotnet add artifacts/ProtocolDemo/ProtocolDemo.csproj package YuJanggi.Protocol.V2 --version 0.2.0 --source ./artifacts/nuget
 ```
 
 아래 최소 예제를 `artifacts/ProtocolDemo/Program.cs`에 넣고 실행합니다.
@@ -128,8 +137,8 @@ True
 | 본문 크기 | 1~4096바이트 |
 | 메시지 공통 필드 | `Type`, `RequestId`, `Payload` |
 | JSON 설정 | System.Text.Json 기본 설정: 속성 이름 유지, enum은 숫자 |
-| 클라이언트 종류 | `ProtocolHandshake = 0` |
-| 서버 종류 | `ProtocolHandshake = 0`, `Error = 100` |
+| 클라이언트 종류 | `ProtocolHandshake = 0`, `MatchingRequest = 1`, `MatchingCancelRequest = 2` |
+| 서버 종류 | `ProtocolHandshake = 0`, `MatchingResponse = 1`, `MatchingCancelResponse = 2`, `MatchingFound = 3`, `Error = 100` |
 
 TCP에서는 한 번의 읽기로 메시지 전체가 도착한다고 가정하지 않습니다. 소비자는 헤더
 4바이트를 모두 읽고 길이를 검증한 다음 본문을 정확히 그 길이만큼 읽어 역직렬화해야 합니다.
@@ -144,7 +153,7 @@ TCP에서는 한 번의 읽기로 메시지 전체가 도착한다고 가정하�
 `CoreVersionMismatch = 2`이며 두 불일치는 조합할 수 있습니다.
 DTO는 결과를 표현할 뿐 버전 비교나 접속 차단을 직접 수행하지 않습니다.
 `ProtocolVersion.Current`는 통신 버전이고 `.csproj`의 `Version`은 패키지 버전입니다.
-현재 값은 둘 다 `0.1.0`이지만 서로 다른 용도입니다.
+현재 통신 버전은 `0.1.0`, 패키지 버전은 `0.2.0`입니다.
 
 ## 개발 및 검증
 

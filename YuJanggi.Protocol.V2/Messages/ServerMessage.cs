@@ -15,7 +15,10 @@ namespace YuJanggi.Protocol.V2.Messages
 
     public enum ServerMessageType
     {
-        ProtocolHandshake,
+        ProtocolHandshake = 0,
+        MatchingResponse = 1,
+        MatchingCancelResponse = 2,
+        MatchingFound = 3,
         Error = 100
     }
     public sealed record ServerMessage

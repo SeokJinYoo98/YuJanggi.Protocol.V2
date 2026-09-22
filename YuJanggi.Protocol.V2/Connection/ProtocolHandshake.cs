@@ -8,9 +8,9 @@ namespace YuJanggi.Protocol.V2.Connection
     [Flags]
     public enum ProtocolHandshakeResult
     {
-        Success = 0,
-        ProtocolVersionMismatch = 1 << 0,
-        CoreVersionMismatch = 1 << 1
+        Success                     = 0,
+        ProtocolVersionMismatch     = 1 << 0,
+        CoreVersionMismatch         = 1 << 1
     }
     public sealed record ProtocolHandshakeRequest
     {
