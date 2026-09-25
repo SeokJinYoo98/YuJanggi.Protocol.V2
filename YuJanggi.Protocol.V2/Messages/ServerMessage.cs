@@ -19,6 +19,7 @@ namespace YuJanggi.Protocol.V2.Messages
         MatchingResponse = 1,
         MatchingCancelResponse = 2,
         MatchingFound = 3,
+        FormationSubmitResponse = 4,
         Error = 100
     }
     public sealed record ServerMessage

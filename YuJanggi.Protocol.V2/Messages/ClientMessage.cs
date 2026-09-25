@@ -12,6 +12,7 @@ namespace YuJanggi.Protocol.V2.Messages
         ProtocolHandshake = 0,
         MatchingRequest = 1,
         MatchingCancelRequest = 2,
+        FormationSubmit = 3,
     }
     /// <summary>
     /// [Type]
