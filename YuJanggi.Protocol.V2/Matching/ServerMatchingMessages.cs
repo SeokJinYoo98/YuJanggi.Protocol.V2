@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 namespace YuJanggi.Protocol.V2.Matching
 {
     public enum MatchingResult
@@ -82,6 +84,25 @@ namespace YuJanggi.Protocol.V2.Matching
 
         public MatchingPlayer Opponent { get; init; }
             = new MatchingPlayer();
+    }
+    public enum ProtocolFormation
+    {
+        HEHE = 0,
+        EHEH = 1,
+        EHHE = 2,
+        HEEH = 3
+    }
+    /// <summary>
+    /// 양측 포진 접수와 GameRoom 생성이 완료된 뒤 최종 포진을 전달하는 서버 이벤트입니다.
+    /// 실제 게임 시작을 의미하지 않습니다.
+    /// </summary>
+    public sealed record GameReady
+    {
+        public string MatchId { get; init; } = string.Empty;
+
+        public ProtocolFormation ChoFormation { get; init; }
+
+        public ProtocolFormation HanFormation { get; init; }
     }
 }
 

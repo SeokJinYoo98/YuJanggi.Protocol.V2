@@ -93,8 +93,12 @@ namespace YuJanggi.Protocol.V2.Tests
             var match = new MatchingFound
             {
                 MatchId = "match-001",
-                ChoPlayer = new MatchingPlayer { PlayerId = "player-cho", PlayerName = "초 플레이어" },
-                HanPlayer = new MatchingPlayer { PlayerId = "player-han", PlayerName = "한 플레이어" }
+                MyTeam = ProtocolPlayerTeam.Cho,
+                Opponent = new MatchingPlayer
+                {
+                    PlayerId = "player-han", PlayerNickname = "한 플레이어",
+                    PlayerTeam = ProtocolPlayerTeam.Han
+                }
             };
             var message = ServerMessageFactory.CreateEvent(ServerMessageType.MatchingFound, match);
 
@@ -104,10 +108,35 @@ namespace YuJanggi.Protocol.V2.Tests
             Assert.AreEqual(ServerMessageType.MatchingFound, received.Type);
             Assert.IsNull(received.RequestId);
             Assert.AreEqual(match.MatchId, payload.MatchId);
-            Assert.AreEqual(match.ChoPlayer.PlayerId, payload.ChoPlayer.PlayerId);
-            Assert.AreEqual(match.ChoPlayer.PlayerName, payload.ChoPlayer.PlayerName);
-            Assert.AreEqual(match.HanPlayer.PlayerId, payload.HanPlayer.PlayerId);
-            Assert.AreEqual(match.HanPlayer.PlayerName, payload.HanPlayer.PlayerName);
+            Assert.AreEqual(match.MyTeam, payload.MyTeam);
+            Assert.AreEqual(match.Opponent.PlayerId, payload.Opponent.PlayerId);
+            Assert.AreEqual(match.Opponent.PlayerNickname, payload.Opponent.PlayerNickname);
+            Assert.AreEqual(match.Opponent.PlayerTeam, payload.Opponent.PlayerTeam);
+        }
+
+        [TestMethod]
+        [DataRow(ProtocolFormation.HEHE, 0, ProtocolFormation.HEEH, 3)]
+        [DataRow(ProtocolFormation.EHEH, 1, ProtocolFormation.EHHE, 2)]
+        [DataRow(ProtocolFormation.EHHE, 2, ProtocolFormation.EHEH, 1)]
+        [DataRow(ProtocolFormation.HEEH, 3, ProtocolFormation.HEHE, 0)]
+        public void GameReady_RoundTrip_PreservesMatchAndFormationWireValues(
+            ProtocolFormation cho, int choValue, ProtocolFormation han, int hanValue)
+        {
+            var ready = new GameReady
+            {
+                MatchId = "match-ready-001", ChoFormation = cho, HanFormation = han
+            };
+            var message = ServerMessageFactory.CreateEvent(ServerMessageType.GameReady, ready);
+            var received = RoundTrip(message);
+            var payload = received.GetPayload<GameReady>();
+
+            Assert.AreEqual(5, (int)received.Type);
+            Assert.IsNull(received.RequestId);
+            Assert.AreEqual(ready.MatchId, payload.MatchId);
+            Assert.AreEqual(cho, payload.ChoFormation);
+            Assert.AreEqual(han, payload.HanFormation);
+            Assert.AreEqual(choValue, received.Payload!.Value.GetProperty("ChoFormation").GetInt32());
+            Assert.AreEqual(hanValue, received.Payload!.Value.GetProperty("HanFormation").GetInt32());
         }
 
         private static TMessage RoundTrip<TMessage>(TMessage message)
