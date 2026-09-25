@@ -46,6 +46,8 @@ namespace YuJanggi.Protocol.V2.Matching
     /// <summary>포진 접수 결과입니다. RoomCreated는 게임 시작을 의미하지 않습니다.</summary>
     public sealed record FormationSubmitResponse
     {
+        public string MatchId { get; init; }
+            = string.Empty;
         public FormationSubmitResult Result { get; init; }
         public bool RoomCreated { get; init; }
     }
