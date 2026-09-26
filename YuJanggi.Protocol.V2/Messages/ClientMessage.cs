@@ -9,10 +9,12 @@ namespace YuJanggi.Protocol.V2.Messages
 
     public enum ClientMessageType
     {
-        ProtocolHandshake = 0,
-        MatchingRequest = 1,
-        MatchingCancelRequest = 2,
-        FormationSubmit = 3,
+        // Connect
+        HandshakeRequest = 0,
+        // Matching
+        MatchingRequest = 1, MatchingCancelRequest = 2, FormationSubmit = 3,
+        // InGame
+        GameSceneReadyRequest = 4, MoveRequest = 5
     }
     /// <summary>
     /// [Type]

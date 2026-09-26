@@ -60,7 +60,7 @@ namespace YuJanggi.Protocol.V2.Matching
     }
 
     /// <summary>매칭된 플레이어의 식별 정보입니다. 진영은 이를 담는 필드로 구분합니다.</summary>
-    public sealed record MatchingPlayer
+    public sealed record MatchingPlayerEvent
     {
         public string PlayerId   { get; init; } 
             = string.Empty;
@@ -82,8 +82,8 @@ namespace YuJanggi.Protocol.V2.Matching
         public ProtocolPlayerTeam MyTeam { get; init; }
             = ProtocolPlayerTeam.None;
 
-        public MatchingPlayer Opponent { get; init; }
-            = new MatchingPlayer();
+        public MatchingPlayerEvent Opponent { get; init; }
+            = new MatchingPlayerEvent();
     }
     public enum ProtocolFormation
     {
@@ -96,7 +96,7 @@ namespace YuJanggi.Protocol.V2.Matching
     /// 양측 포진 접수와 GameRoom 생성이 완료된 뒤 최종 포진을 전달하는 서버 이벤트입니다.
     /// 실제 게임 시작을 의미하지 않습니다.
     /// </summary>
-    public sealed record GameReady
+    public sealed record GameReadyEvent
     {
         public string MatchId { get; init; } = string.Empty;
 
