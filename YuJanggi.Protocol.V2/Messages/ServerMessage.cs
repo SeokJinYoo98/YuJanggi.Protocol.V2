@@ -15,12 +15,19 @@ namespace YuJanggi.Protocol.V2.Messages
 
     public enum ServerMessageType
     {
+        // Connecting
         ProtocolHandshake = 0,
+
+        // Matching
         MatchingResponse = 1,
         MatchingCancelResponse = 2,
         MatchingFound = 3,
         FormationSubmitResponse = 4,
         GameReady = 5,
+
+        // InGame
+        GameStartEvent = 6,
+
         Error = 100
     }
     public sealed record ServerMessage

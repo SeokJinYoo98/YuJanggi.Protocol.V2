@@ -23,7 +23,7 @@ namespace YuJanggi.Protocol.V2.Tests
 
             ClientMessage message =
                 ClientMessageFactory.Create(
-                    ClientMessageType.ProtocolHandshake,
+                    ClientMessageType.HandshakeRequest,
                     request);
 
             byte[] body =
@@ -49,7 +49,7 @@ namespace YuJanggi.Protocol.V2.Tests
                 receivedMessage.GetPayload<ProtocolHandshakeRequest>();
 
             Assert.AreEqual(
-                ClientMessageType.ProtocolHandshake,
+                ClientMessageType.HandshakeRequest,
                 receivedMessage.Type);
 
             Assert.AreEqual(

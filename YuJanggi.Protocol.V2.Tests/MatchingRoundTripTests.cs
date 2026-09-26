@@ -94,7 +94,7 @@ namespace YuJanggi.Protocol.V2.Tests
             {
                 MatchId = "match-001",
                 MyTeam = ProtocolPlayerTeam.Cho,
-                Opponent = new MatchingPlayer
+                Opponent = new MatchingPlayerEvent
                 {
                     PlayerId = "player-han", PlayerNickname = "한 플레이어",
                     PlayerTeam = ProtocolPlayerTeam.Han
@@ -122,13 +122,13 @@ namespace YuJanggi.Protocol.V2.Tests
         public void GameReady_RoundTrip_PreservesMatchAndFormationWireValues(
             ProtocolFormation cho, int choValue, ProtocolFormation han, int hanValue)
         {
-            var ready = new GameReady
+            var ready = new GameReadyEvent
             {
                 MatchId = "match-ready-001", ChoFormation = cho, HanFormation = han
             };
             var message = ServerMessageFactory.CreateEvent(ServerMessageType.GameReady, ready);
             var received = RoundTrip(message);
-            var payload = received.GetPayload<GameReady>();
+            var payload = received.GetPayload<GameReadyEvent>();
 
             Assert.AreEqual(5, (int)received.Type);
             Assert.IsNull(received.RequestId);
